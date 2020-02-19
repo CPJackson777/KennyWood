@@ -56,14 +56,12 @@ class ItineraryItems(ViewSet):
         except Exception as ex:
             return HttpResponseServerError(ex)
 
-    def create(self, request):
-        new_itinerary_item = Itinerary()
-        new_itinerary_item.starttime = request.data["starttime"]
-        new_itinerary_item.customer_id = request.auth.user.id
-        new_itinerary_item.attraction_id = request.data["ride_id"]
-
-        new_itinerary_item.save()
-
-        serializer = ItinerarySerializer(new_itinerary_item, context={'request': request})
-
-        return Response(serializer.data)
+    def list(self, request):
+            """Handle GET requests to itinerary resource
+            Returns:
+                Response -- JSON serialized list of itinerary
+            """
+            itinerary_items = Itinerary.objects.all()
+            serializer = ItinerarySerializer(
+                itinerary_items, many=True, context={'request': request})
+            return Response(serializer.data)
