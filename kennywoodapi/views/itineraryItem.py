@@ -21,6 +21,7 @@ class ItinerarySerializer(serializers.HyperlinkedModelSerializer):
             view_name='itinerary',
             lookup_field='id'
         )
+        #the fields are the columns you want to include in the database
         fields = ('id', 'url', 'starttime', 'attraction', 'customer')
         depth = 2
 

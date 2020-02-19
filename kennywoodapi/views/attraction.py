@@ -20,6 +20,7 @@ class AttractionSerializer(serializers.HyperlinkedModelSerializer):
             view_name='attraction',
             lookup_field='id'
         )
+        #the fields are the columns you want to include in the database
         fields = ('id', 'url', 'name', 'area')
         depth = 2
 
@@ -35,10 +36,10 @@ class Attractions(ViewSet):
         """
         newattraction = Attraction()
         newattraction.name = request.data["name"]
-        newattraction.area = request.data["area"]
+        newattraction.area_id = request.data["area"]
         newattraction.save()
 
-        serializer = ParkAreaSerializer(newattraction, context={'request': request})
+        serializer = AttractionSerializer(newattraction, context={'request': request})
 
         return Response(serializer.data)
 
@@ -69,7 +70,7 @@ class Attractions(ViewSet):
 
         area = self.request.query_params.get('area', None)
         if area is not None:
-            #the line below allows you to get joins from your database
+            #the line below allows you to make a join query from area to attraction
             attractions = attractions.filter(area__id=area)
 
         serializer = AttractionSerializer(attractions, many=True, context={'request': request})
@@ -84,7 +85,7 @@ class Attractions(ViewSet):
         """
         attraction = Attraction.objects.get(pk=pk)
         attraction.name = request.data["name"]
-        attraction.area = request.data["area"]
+        attraction.area_id = request.data["area"]
         attraction.save()
 
         return Response({}, status=status.HTTP_204_NO_CONTENT)
