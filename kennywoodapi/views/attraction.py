@@ -33,10 +33,10 @@ class Attractions(ViewSet):
         Returns:
             Response -- JSON serialized ParkArea instance
         """
-       newattraction = Attraction()
-       newattraction.name = request.data["name"]
-       newattraction.area = request.data["area"]
-       newattraction.save()
+        newattraction = Attraction()
+        newattraction.name = request.data["name"]
+        newattraction.area = request.data["area"]
+        newattraction.save()
 
         serializer = ParkAreaSerializer(newattraction, context={'request': request})
 
@@ -57,6 +57,7 @@ class Attractions(ViewSet):
         except Exception as ex:
             return HttpResponseServerError(ex)
 
+
     def list(self, request):
         """Handle GET requests to park attractions resource
 
@@ -75,6 +76,19 @@ class Attractions(ViewSet):
 
         return Response(serializer.data)
 
+    # handles PUT
+    def update(self, request, pk=None):
+        """Handle PUT requests for a attraction
+        Returns:
+            Response -- Empty body with 204 status code
+        """
+        attraction = Attraction.objects.get(pk=pk)
+        attraction.name = request.data["name"]
+        attraction.area = request.data["area"]
+        attraction.save()
+
+        return Response({}, status=status.HTTP_204_NO_CONTENT)
+
      # handles DELETE
     def destroy(self, request, pk=None):
         """Handle DELETE requests for a single attraction
@@ -92,3 +106,4 @@ class Attractions(ViewSet):
 
         except Exception as ex:
             return Response({'message': ex.args[0]}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
