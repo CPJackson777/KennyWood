@@ -1,3 +1,5 @@
+# In this file, I am using a HyperlinkedModelSerializer. What this class does is take a Python object and convert it into JSON for you, and adds a virtual property of url to the resulting JSON.
+
 """View module for handling requests about attractions"""
 from django.http import HttpResponseServerError
 from rest_framework.viewsets import ViewSet
@@ -23,6 +25,23 @@ class AttractionSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class Attractions(ViewSet):
+
+    # Handles POST
+    def create(self, request):
+        """Handle POST operations
+
+        Returns:
+            Response -- JSON serialized ParkArea instance
+        """
+        newarea = ParkAttraction()
+        newarea.name = request.data["name"]
+        newarea.area = request.data["area"]
+        newarea.save()
+
+        serializer = ParkAreaSerializer(newattraction, context={'request': request})
+
+        return Response(serializer.data)
+
 
     def retrieve(self, request, pk=None):
         """Handle GET requests for single attraction
