@@ -33,10 +33,10 @@ class Attractions(ViewSet):
         Returns:
             Response -- JSON serialized ParkArea instance
         """
-        newarea = ParkAttraction()
-        newarea.name = request.data["name"]
-        newarea.area = request.data["area"]
-        newarea.save()
+       newattraction = Attraction()
+       newattraction.name = request.data["name"]
+       newattraction.area = request.data["area"]
+       newattraction.save()
 
         serializer = ParkAreaSerializer(newattraction, context={'request': request})
 
