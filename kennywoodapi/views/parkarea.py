@@ -21,6 +21,7 @@ class ParkAreaSerializer(serializers.HyperlinkedModelSerializer):
             view_name='parkarea',
             lookup_field='id'
         )
+        #the fields are the columns you want to include in the database
         fields = ('id', 'url', 'name', 'theme')
 
 
