@@ -42,7 +42,7 @@ class Attractions(ViewSet):
 
         return Response(serializer.data)
 
-
+    # handles GET one ( the /<some_number tells it that)
     def retrieve(self, request, pk=None):
         """Handle GET requests for single attraction
 
@@ -68,6 +68,7 @@ class Attractions(ViewSet):
 
         area = self.request.query_params.get('area', None)
         if area is not None:
+            #the line below allows you to get joins from your database
             attractions = attractions.filter(area__id=area)
 
         serializer = AttractionSerializer(attractions, many=True, context={'request': request})
